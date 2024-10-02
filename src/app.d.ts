@@ -8,6 +8,7 @@ declare global {
 		// interface PageState {}
 		// interface Platform {}
 	}
+	const google: typeof import('@types/google.maps');
 }
 
 export {};

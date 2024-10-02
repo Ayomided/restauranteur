@@ -17,6 +17,7 @@
 		"@sveltejs/vite-plugin-svelte": "^3.0.0",
 		"@tailwindcss/typography": "^0.5.14",
 		"@types/eslint": "^9.6.0",
+		"@types/google.maps": "^3.58.1",
 		"autoprefixer": "^10.4.20",
 		"eslint": "^9.0.0",
 		"eslint-config-prettier": "^9.1.0",
@@ -36,6 +37,7 @@
 	"dependencies": {
 		"@fontsource/ibm-plex-mono": "^5.1.0",
 		"@fontsource/pt-sans": "^5.1.0",
+		"@googlemaps/js-api-loader": "^1.16.8",
 		"bits-ui": "^0.21.15",
 		"clsx": "^2.1.1",
 		"tailwind-merge": "^2.5.2",
