@@ -35,6 +35,8 @@
 	"type": "module",
 	"dependencies": {
 		"@fontsource/ibm-plex-mono": "^5.1.0",
+		"@fontsource/pt-sans": "^5.1.0",
+		"bits-ui": "^0.21.15",
 		"clsx": "^2.1.1",
 		"tailwind-merge": "^2.5.2",
 		"tailwind-variants": "^0.2.1"

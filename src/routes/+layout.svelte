@@ -1,6 +1,6 @@
 <script>
 	import '../app.css';
-	import '@fontsource/ibm-plex-mono';
+	import '@fontsource/pt-sans';
 </script>
 
 <slot></slot>
