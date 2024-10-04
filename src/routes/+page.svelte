@@ -80,7 +80,7 @@
 	</form>
 
 	<div>
-		{#if allergies && dietaryCategory}
+		{#if allergies}
 			Your Preferences
 			<p>
 				{allergies}
@@ -97,7 +97,11 @@
 		{/if}
 		<ul>
 			{#each $restaurants as restaurant}
-				{restaurant.website}
+				{#if restaurant.website}
+					<Button variant="link">
+						{restaurant.website}
+					</Button>
+				{/if}
 				<RestaurantCard
 					restaurantName={restaurant.name}
 					restaurantAddress={restaurant.formatted_address}
