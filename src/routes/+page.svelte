@@ -2,7 +2,7 @@
 	import Button from '$lib/components/ui/button/button.svelte';
 	import { restaurants, searchRestaurants } from './restaurantSearchLogic';
 	import { browser } from '$app/environment';
-	import type { DietraySchema } from './api/chat/+server';
+	import type { DietraySchema, Allergy, DietaryCategory } from './api/chat/+server';
 	import RestaurantCard from './RestaurantCard.svelte';
 
 	interface ChatMessage {
@@ -18,6 +18,8 @@
 
 	let message = '';
 	let chat: ChatMessage[] = [];
+	let allergies: Allergy[];
+	let dietaryCategory: DietaryCategory[];
 
 	async function handleSendRestrictions() {
 		if (message === '') return;
@@ -54,10 +56,12 @@
 		const restrictions = await handleSendRestrictions();
 		const pout = JSON.stringify(restrictions?.reply);
 		const parsedRestrictions = JSON.parse(pout) as DietraySchema;
-		const allergies = parsedRestrictions.DietaryRestriction.allergies;
-		const dietaryCat = parsedRestrictions.DietaryRestriction.dietaryCategories;
-		console.log(`Restaurant with ${dietaryCat} meals and with ${allergies} restrictions`);
-		searchRestaurants(`Restaurant with ${dietaryCat} meals and with ${allergies} restrictions`);
+		allergies = parsedRestrictions.DietaryRestriction.allergies;
+		dietaryCategory = parsedRestrictions.DietaryRestriction.dietaryCategories;
+		console.log(`${dietaryCategory} | ${allergies}`);
+		searchRestaurants(
+			`Restaurant with ${dietaryCategory} meals and with ${allergies} restrictions`
+		);
 	}
 </script>
 
@@ -75,19 +79,30 @@
 		<Button type="submit" class="md:max-w-48">Curate Restaurants</Button>
 	</form>
 
+	<div>
+		{#if allergies && dietaryCategory}
+			Your Preferences
+			<p>
+				{allergies}
+			</p>
+			<p>
+				{dietaryCategory}
+			</p>
+		{/if}
+	</div>
+
 	<div class="flex flex-col gap-4">
 		{#if browser}
 			<div use:initMap style="height: 400px; width: 100%;"></div>
 		{/if}
 		<ul>
 			{#each $restaurants as restaurant}
+				{restaurant.website}
 				<RestaurantCard
 					restaurantName={restaurant.name}
 					restaurantAddress={restaurant.formatted_address}
 					restaurantRating={restaurant.rating}
 				/>
-				{restaurant.website}
-				{restaurant.reviews}
 			{/each}
 		</ul>
 	</div>

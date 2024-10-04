@@ -4,7 +4,6 @@ import type { Loader } from '@googlemaps/js-api-loader';
 export type Restaurant = google.maps.places.PlaceResult;
 
 export const restaurants: Writable<Restaurant[]> = writable([]);
-export const restaurantsDetails: Writable<Restaurant> = writable();
 export const searchInput: Writable<string> = writable('');
 
 let placesService: google.maps.places.PlacesService;
@@ -25,7 +24,7 @@ export async function initializeMap(element: HTMLElement): Promise<void> {
 	placesService = new google.maps.places.PlacesService(map);
 }
 
-export function searchRestaurantsDetails(placeId: string): void {
+export function searchRestaurantsDetails(placeId: string, index: number): void {
 	if (!placesService) return;
 
 	const request: google.maps.places.PlaceDetailsRequest = {
@@ -39,7 +38,16 @@ export function searchRestaurantsDetails(placeId: string): void {
 			status: google.maps.places.PlacesServiceStatus
 		) => {
 			if (status === google.maps.places.PlacesServiceStatus.OK && results) {
-				restaurantsDetails.set(results);
+				const currentRestaurants = get(restaurants);
+
+				if (currentRestaurants[index]) {
+					currentRestaurants[index] = {
+						...currentRestaurants[index],
+						...results
+					};
+
+					restaurants.set(currentRestaurants);
+				}
 			}
 		}
 	);
@@ -61,6 +69,11 @@ export function searchRestaurants(query: string): void {
 		) => {
 			if (status === google.maps.places.PlacesServiceStatus.OK && results) {
 				restaurants.set(results);
+				results.forEach((restaurant, index) => {
+					if (restaurant.place_id) {
+						searchRestaurantsDetails(restaurant.place_id, index);
+					}
+				});
 			}
 		}
 	);
